@@ -40,7 +40,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     signIn: "/login",
   },
   session: { strategy: "jwt" },
-      callbacks: {
+        callbacks: {
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
@@ -48,8 +48,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       return token;
     },
     async session({ session, token }) {
+      // Safe check to avoid TypeScript error
       if (session?.user && token?.id) {
-        session.user.id = token.id as string;
+        (session.user as any).id = token.id as string;
       }
       return session;
     },
