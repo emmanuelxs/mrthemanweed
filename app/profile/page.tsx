@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { LogOut, User } from 'lucide-react';
 
+export const dynamic = 'force-dynamic';   // ← This fixes the prerender error
+
 export default function Profile() {
   const { data: session, status } = useSession();
   const router = useRouter();
