@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 
 export default function Login() {
@@ -14,17 +13,17 @@ export default function Login() {
     e.preventDefault();
     setLoading(true);
 
-    const result = await signIn('credentials', {
-      email,
-      password,
-      redirect: false,
+    const res = await fetch('/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password }),
     });
 
-    if (result?.ok) {
+    if (res.ok) {
+      alert('Logged in successfully!');
       router.push('/');
-      router.refresh();
     } else {
-      alert('Invalid email or password. Please try again.');
+      alert('Invalid email or password');
     }
     setLoading(false);
   };
