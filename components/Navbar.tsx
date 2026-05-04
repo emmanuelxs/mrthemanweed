@@ -1,14 +1,21 @@
 'use client';
 
-import { Twitter, X } from 'lucide-react';   // X is the new Twitter icon
+import { Twitter, X, LogOut } from 'lucide-react';
+import { signOut } from 'next-auth/react';
 
 export default function Navbar() {
+  const handleLogout = () => {
+    if (confirm('Are you sure you want to log out?')) {
+      signOut({ callbackUrl: '/login' });
+    }
+  };
+
   return (
     <nav className="fixed top-0 left-0 right-0 bg-black/80 backdrop-blur-md border-b border-gray-800 z-50">
       <div className="max-w-7xl mx-auto px-4 h-14 flex items-center justify-between">
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2">
-            <X className="w-8 h-8 text-[#1d9bf0]" />   {/* Changed from Twitter to X */}
+            <X className="w-8 h-8 text-[#1d9bf0]" />
             <span className="font-bold text-2xl">MrTheManWEED</span>
           </div>
         </div>
@@ -17,7 +24,19 @@ export default function Navbar() {
           <button className="bg-[#1d9bf0] hover:bg-[#1a8cd8] px-6 py-1.5 rounded-full font-semibold transition">
             Post
           </button>
-          <div className="w-8 h-8 bg-gray-600 rounded-full"></div>
+
+          {/* Profile + Logout */}
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 bg-gray-600 rounded-full cursor-pointer hover:ring-2 hover:ring-[#1d9bf0]"></div>
+            
+            <button
+              onClick={handleLogout}
+              className="flex items-center gap-2 px-4 py-2 text-sm hover:bg-gray-900 rounded-full transition"
+            >
+              <LogOut className="w-4 h-4" />
+              <span>Logout</span>
+            </button>
+          </div>
         </div>
       </div>
     </nav>
