@@ -43,7 +43,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.id = emmanuelxs;
+        token.id = user.id;
       }
       return token;
     },
