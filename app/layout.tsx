@@ -5,7 +5,7 @@ import Sidebar from "@/components/Sidebar";
 
 export const metadata: Metadata = {
   title: "MrTheManWEED",
-  description: "Your personal social network",
+  description: "Your personal Stock Market Signals",
 };
 
 export default function RootLayout({

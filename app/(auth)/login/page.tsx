@@ -24,7 +24,7 @@ export default function Login() {
       router.push('/');
       router.refresh();
     } else {
-      alert('Invalid credentials');
+      alert('Invalid email or password. Please try again.');
     }
     setLoading(false);
   };
