@@ -1,14 +1,11 @@
 'use client';
 
 import { X, LogOut } from 'lucide-react';
-import { useSession, signOut } from 'next-auth/react';
 
 export default function Navbar() {
-  const { data: session } = useSession();
-
   const handleLogout = () => {
     if (confirm('Log out of MrTheManWEED?')) {
-      signOut({ callbackUrl: '/login' });
+      window.location.href = '/api/auth/signout';
     }
   };
 
@@ -25,15 +22,13 @@ export default function Navbar() {
             Post
           </button>
 
-          {session && (
-            <button
-              onClick={handleLogout}
-              className="flex items-center gap-3 px-5 py-2 hover:bg-gray-900 rounded-3xl transition text-red-400 hover:text-red-300"
-            >
-              <LogOut className="w-5 h-5" />
-              <span className="font-medium">Logout</span>
-            </button>
-          )}
+          <button
+            onClick={handleLogout}
+            className="flex items-center gap-3 px-5 py-2 hover:bg-gray-900 rounded-3xl transition text-red-400 hover:text-red-300"
+          >
+            <LogOut className="w-5 h-5" />
+            <span className="font-medium">Logout</span>
+          </button>
         </div>
       </div>
     </nav>
