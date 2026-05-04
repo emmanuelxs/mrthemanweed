@@ -1,15 +1,11 @@
 'use client';
 
 import { X, LogOut } from 'lucide-react';
-import { signOut } from 'next-auth/react';
 
 export default function Navbar() {
-  const handleLogout = async () => {
-    if (confirm('Are you sure you want to log out?')) {
-      await signOut({ 
-        callbackUrl: '/login',
-        redirect: true 
-      });
+  const handleLogout = () => {
+    if (confirm('Log out?')) {
+      window.location.href = '/api/auth/signout';
     }
   };
 
@@ -29,13 +25,11 @@ export default function Navbar() {
           </button>
 
           <div className="flex items-center gap-3">
-            {/* Profile icon */}
-            <div className="w-8 h-8 bg-gray-600 rounded-full cursor-pointer hover:ring-2 hover:ring-[#1d9bf0]"></div>
+            <div className="w-8 h-8 bg-gray-600 rounded-full"></div>
             
-            {/* Logout button */}
             <button
               onClick={handleLogout}
-              className="flex items-center gap-2 px-4 py-2 text-sm hover:bg-gray-900 rounded-full transition text-red-400 hover:text-red-300"
+              className="flex items-center gap-2 px-4 py-2 text-sm hover:bg-gray-900 rounded-full transition text-red-400"
             >
               <LogOut className="w-4 h-4" />
               <span>Logout</span>
