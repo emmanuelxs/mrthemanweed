@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Sidebar from "@/components/Sidebar";
-
+export const dynamic = 'force-dynamic';
 export const metadata: Metadata = {
   title: "MrTheManWEED",
   description: "Your personal Stock Market Signals",
