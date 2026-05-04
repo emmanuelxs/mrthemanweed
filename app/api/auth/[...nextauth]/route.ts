@@ -13,19 +13,15 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         password: { label: "Password", type: "password" }
       },
       async authorize(credentials) {
-        if (!credentials?.email || !credentials?.password) {
-          return null;
-        }
+        if (!credentials?.email || !credentials?.password) return null;
 
         await connectDB();
-        
-        const user = await User.findOne({ email: credentials.email as string });
+
+        const user = await User.findOne({ email: credentials.email });
+
         if (!user) return null;
 
-        const isValid = await bcrypt.compare(
-          credentials.password as string, 
-          user.password
-        );
+        const isValid = await bcrypt.compare(credentials.password as string, user.password);
 
         if (!isValid) return null;
 
@@ -38,22 +34,15 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       },
     }),
   ],
-  pages: {
-    signIn: "/login",
-  },
+  pages: { signIn: "/login" },
   session: { strategy: "jwt" },
   callbacks: {
     async jwt({ token, user }) {
-      if (user) {
-        token.id = user.id;
-      }
+      if (user) token.id = user.id;
       return token;
     },
     async session({ session, token }) {
-      if (token?.id) {
-        session.user = session.user || ({} as any);
-        (session.user as any).id = token.id as string;
-      }
+      if (token?.id) (session.user as any).id = token.id;
       return session;
     },
   },
