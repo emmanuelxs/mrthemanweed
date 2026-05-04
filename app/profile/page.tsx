@@ -1,8 +1,9 @@
 'use client';
 
-import { useSession } from 'next-auth/react';
+import { useSession, signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
+import { LogOut, User } from 'lucide-react';
 
 export default function Profile() {
   const { data: session, status } = useSession();
@@ -14,50 +15,37 @@ export default function Profile() {
     }
   }, [status, router]);
 
-  if (status === 'loading') return <div className="p-8 text-center">Loading...</div>;
+  if (status === 'loading') {
+    return <div className="p-8 text-center text-gray-400">Loading profile...</div>;
+  }
+
+  if (!session) return null;
 
   return (
-    <div className="p-4">
+    <div className="p-4 max-w-2xl mx-auto">
       <div className="border-b border-gray-800 pb-4 mb-6">
         <h1 className="text-2xl font-bold">Profile</h1>
       </div>
 
       <div className="flex flex-col items-center text-center">
-        {/* Profile Picture */}
-        <div className="w-28 h-28 bg-gray-600 rounded-full mb-4"></div>
-
-        {/* Name & Username */}
-        <h2 className="text-3xl font-bold">{session?.user?.name || 'Your Name'}</h2>
-        <p className="text-gray-500 text-xl">@{session?.user?.username || 'username'}</p>
-
-        {/* Bio */}
-        <p className="mt-4 text-gray-400 max-w-xs">
-          This is your bio. Tell the world about yourself.
-        </p>
-
-        {/* Stats */}
-        <div className="flex gap-8 mt-8 text-sm">
-          <div>
-            <span className="font-bold text-xl">0</span>
-            <p className="text-gray-500">Posts</p>
-          </div>
-          <div>
-            <span className="font-bold text-xl">0</span>
-            <p className="text-gray-500">Following</p>
-          </div>
-          <div>
-            <span className="font-bold text-xl">0</span>
-            <p className="text-gray-500">Followers</p>
-          </div>
+        <div className="w-28 h-28 bg-gray-600 rounded-full mb-4 flex items-center justify-center">
+          <User className="w-14 h-14 text-gray-400" />
         </div>
 
-        <button className="mt-8 px-6 py-2 border border-gray-600 rounded-full hover:bg-gray-900">
-          Edit Profile
-        </button>
-      </div>
+        <h2 className="text-3xl font-bold">{session.user?.name || 'Your Name'}</h2>
+        <p className="text-gray-500 text-xl">@{session.user?.username || 'username'}</p>
 
-      <div className="mt-12 text-center text-gray-500">
-        Your posts will appear here soon...
+        <p className="mt-6 text-gray-400 max-w-xs">
+          Welcome to your profile! More features coming soon.
+        </p>
+
+        <button
+          onClick={() => signOut({ callbackUrl: '/login' })}
+          className="mt-10 flex items-center gap-2 px-6 py-3 bg-red-600 hover:bg-red-700 rounded-full text-white font-medium transition"
+        >
+          <LogOut className="w-4 h-4" />
+          Logout
+        </button>
       </div>
     </div>
   );
