@@ -2,9 +2,6 @@ import { NextRequest, NextResponse } from 'next/server';
 import { connectDB } from '@/lib/mongodb';
 import User from '@/models/User';
 import bcrypt from 'bcryptjs';
-import { Resend } from 'resend';
-
-const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(req: NextRequest) {
   try {
@@ -33,21 +30,25 @@ export async function POST(req: NextRequest) {
       password: hashedPassword,
     });
 
-    // Send welcome email
-    await resend.emails.send({
-      from: "MrTheManWEED <noreply@mrthemanweed.com>",   // You can change this later
-      to: [email],
-      subject: "Welcome to MrTheManWEED! 🎉",
-      html: `
-        <h1>Welcome to MrTheManWEED, ${name}!</h1>
-        <p>Thank you for joining the best social platform.</p>
-        <p>Your username: <strong>@${username}</strong></p>
-        <p>Start posting and connecting with people now!</p>
-        <br>
-        <p>Enjoy,</p>
-        <p>The MrTheManWEED Team</p>
-      `,
-    });
+    // Send welcome email (only if API key exists)
+    if (process.env.RESEND_API_KEY) {
+      const { Resend } = await import('resend');
+      const resend = new Resend(process.env.RESEND_API_KEY);
+
+      await resend.emails.send({
+        from: "MrTheManWEED <onboarding@resend.dev>",
+        to: [email],
+        subject: "Welcome to MrTheManWEED! 🎉",
+        html: `
+          <h1>Welcome to MrTheManWEED, ${name}!</h1>
+          <p>Thank you for joining!</p>
+          <p>Your username: <strong>@${username}</strong></p>
+          <p>Start posting and connecting with people now!</p>
+          <br>
+          <p>The MrTheManWEED Team</p>
+        `,
+      });
+    }
 
     return NextResponse.json({ 
       message: "Account created successfully! Welcome email sent.",
