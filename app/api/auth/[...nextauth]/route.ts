@@ -13,11 +13,13 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         password: { label: "Password", type: "password" }
       },
       async authorize(credentials) {
-        if (!credentials?.email || !credentials?.password) return null;
+        if (!credentials?.email || !credentials?.password) {
+          return null;
+        }
 
         await connectDB();
         
-        const user = await User.findOne({ email: credentials.email });
+        const user = await User.findOne({ email: credentials.email as string });
         if (!user) return null;
 
         const isValid = await bcrypt.compare(
