@@ -1,12 +1,8 @@
 'use client';
 
 import { X, LogOut } from 'lucide-react';
-import { usePathname } from 'next/navigation';
 
 export default function Navbar() {
-  const pathname = usePathname();
-  const isAuthPage = pathname === '/login' || pathname === '/register';
-
   const handleLogout = () => {
     if (confirm('Log out of MrTheManWEED?')) {
       window.location.href = '/api/auth/signout';
@@ -21,21 +17,19 @@ export default function Navbar() {
           <span className="font-bold text-3xl tracking-tighter">MrTheManWEED</span>
         </div>
 
-        {!isAuthPage && (
-          <div className="flex items-center gap-4">
-            <button className="bg-[#1d9bf0] hover:bg-[#1a8cd8] px-8 py-2 rounded-3xl font-bold text-lg transition-all active:scale-95">
-              Post
-            </button>
+        <div className="flex items-center gap-4">
+          <button className="bg-[#1d9bf0] hover:bg-[#1a8cd8] px-8 py-2 rounded-3xl font-bold text-lg transition-all active:scale-95">
+            Post
+          </button>
 
-            <button
-              onClick={handleLogout}
-              className="flex items-center gap-3 px-5 py-2 hover:bg-gray-900 rounded-3xl transition text-red-400 hover:text-red-300"
-            >
-              <LogOut className="w-5 h-5" />
-              <span className="font-medium">Logout</span>
-            </button>
-          </div>
-        )}
+          <button
+            onClick={handleLogout}
+            className="flex items-center gap-3 px-5 py-2 hover:bg-gray-900 rounded-3xl transition text-red-400 hover:text-red-300"
+          >
+            <LogOut className="w-5 h-5" />
+            <span className="font-medium">Logout</span>
+          </button>
+        </div>
       </div>
     </nav>
   );
